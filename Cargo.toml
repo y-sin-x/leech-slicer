@@ -1,0 +1,7 @@
+[package]
+name = "leech-slicer"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+sola-raylib = "6.2.0"
