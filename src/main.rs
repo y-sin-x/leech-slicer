@@ -3,6 +3,9 @@ use sola_raylib::prelude::*;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
+    if args.len() < 2 {
+        panic!("No file provided");
+    }
     let file_path = &args[1];
     let contents = fs::read_to_string(file_path).expect("Unable to read file");
 
@@ -91,7 +94,7 @@ fn main() {
         // Projection switching
         if rl.is_key_pressed(KeyboardKey::KEY_D) || rl.is_key_pressed(KeyboardKey::KEY_A) {
             old_proj_idx = active_proj_idx;
-            let new_idx = if rl.is_key_pressed(KeyboardKey::KEY_D) {active_proj_idx + 1} else {active_proj_idx - 1};
+            let new_idx = if rl.is_key_pressed(KeyboardKey::KEY_D) {active_proj_idx + 1} else {active_proj_idx + projection_vectors.len() - 1};
             active_proj_idx = new_idx.rem_euclid(projection_vectors.len() / 2);
             calculate_projected_points(&leech_slice, &projection_vectors, active_proj_idx, &mut projected_points);
             t = 0.0;
@@ -104,7 +107,7 @@ fn main() {
             if rl.is_key_pressed(KeyboardKey::KEY_DOWN) {
                 active_slice_idx = (active_slice_idx + 1).rem_euclid(slice_heights.len());
             } else if rl.is_key_pressed(KeyboardKey::KEY_UP) {
-                active_slice_idx = (active_slice_idx - 1).rem_euclid(slice_heights.len());
+                active_slice_idx = (active_slice_idx + slice_heights.len() - 1).rem_euclid(slice_heights.len());
             }
 
             // Increase slice height
